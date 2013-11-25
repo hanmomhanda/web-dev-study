@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Book Search</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/sticky-footer.css" rel="stylesheet">
+</head>
+<body>
+<!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Begin page content -->
+      <div class="container">
+        <div class="page-header">
+          <h1>Basic Web - 도서 검색</h1>
+        </div>
+        <div class='row'>
+        <form id='frmSearch' action='/web-dev-study/SearchServlet' method='POST'>
+            <div class='col-xs-8'><input id='txtKeyword' name='keyword' type="text" class="form-control" placeholder="검색어를 입력하세요"></div>
+            <div class='col-xs-4'><a id='btnSearch' class="btn btn-default" href="#" role="button">Search</a></div>            
+        </form>
+        </div>        
+      </div>
+    </div>
+    <div id='searchResult'>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">Powered by <a href='http://getbootstrap.com/' target='_blank'>BootStrap</a></p>
+      </div>
+    </div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+jQuery(document).ready( function () {
+	
+	var goSearch = function () {
+	    $('#frmSearch').submit();
+	    
+// Ajax Version
+//         $.ajax({
+//             type: "POST",
+//             url: "/web-dev-study/SearchServlet",
+//             contentType: "application/x-www-form-urlencoded",
+//             data: JSON.stringify({"keyword": $('#txtKeyword').val()}),
+//             success: renderWithData,
+//             error: handleError
+//         });
+//
+	};
+	
+	var renderWithData = function (data) {
+		var jsonObj = JSON.parse(data);
+		var bookList = jsonObj.channel.item;
+		for ( var item in bookList ) {
+			$('#searchResult').append(item.title+"<br/>");
+		}
+	}
+	
+	var handleError = function (data) {
+		console.log("Data Receiving Error");
+		console.dir(data);
+	};
+	
+	$("#btnSearch").click( goSearch );
+});
+</script>
+</body>
+</html>

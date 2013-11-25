@@ -50,22 +50,22 @@ public class SearchServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");		
 		
 //* Plain Request Version
-		Enumeration<String> headerNames = request.getHeaderNames();
-System.out.println("Request Headers Start------------");
-		while ( headerNames.hasMoreElements() ) {
-			String name = headerNames.nextElement();
-			String value = request.getHeader(name);
-
-System.out.println("  " + name + " : " + value);
-		}
-System.out.println("Request Headers End--------------");
+//		Enumeration<String> headerNames = request.getHeaderNames();
+//System.out.println("Request Headers Start------------");
+//		while ( headerNames.hasMoreElements() ) {
+//			String name = headerNames.nextElement();
+//			String value = request.getHeader(name);
+//
+//System.out.println("  " + name + " : " + value);
+//		}
+//System.out.println("Request Headers End--------------");
 		
 		String keyword = request.getParameter("keyword");
 		String urlEncodedKeyword = URLEncoder.encode(keyword,"utf-8");
 		
 		String urlDaumAPI = "http://apis.daum.net/search/book";
-System.out.println("keyword : " + keyword);
-System.out.println("url encoded eyword : " + urlEncodedKeyword);
+//System.out.println("keyword : " + keyword);
+//System.out.println("url encoded eyword : " + urlEncodedKeyword);
 		String urlParameter = "apikey=DAUM_SEARCH_DEMO_APIKEY&output=json&q="+urlEncodedKeyword;
 		
 		URL url = new URL(urlDaumAPI);		
@@ -79,9 +79,9 @@ System.out.println("url encoded eyword : " + urlEncodedKeyword);
 		dos.close();
 		
 		int responseCode = urlC.getResponseCode();
-System.out.println("Sending 'POST' request to URL : " + urlDaumAPI);
-System.out.println("Post Parameters : " + urlParameter);
-System.out.println("Response Code : " + responseCode);
+//System.out.println("Sending 'POST' request to URL : " + urlDaumAPI);
+//System.out.println("Post Parameters : " + urlParameter);
+//System.out.println("Response Code : " + responseCode);
 
 		BufferedReader	br = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
 		String inputLine = null;

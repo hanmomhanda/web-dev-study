@@ -64,8 +64,6 @@ public class SearchServlet extends HttpServlet {
 		String urlEncodedKeyword = URLEncoder.encode(keyword,"utf-8");
 		
 		String urlDaumAPI = "http://apis.daum.net/search/book";
-//System.out.println("keyword : " + keyword);
-//System.out.println("url encoded eyword : " + urlEncodedKeyword);
 		String urlParameter = "apikey=DAUM_SEARCH_DEMO_APIKEY&output=json&q="+urlEncodedKeyword;
 		
 		URL url = new URL(urlDaumAPI);		

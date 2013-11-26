@@ -59,7 +59,6 @@ public class SearchServlet extends HttpServlet {
 		
 		urlC.setDoOutput(true);
 		urlC.setDoOutput(true);
-		urlC.setDoOutput(true);
 		
 		DataOutputStream dos = new DataOutputStream(urlC.getOutputStream());
 		dos.writeBytes(urlParameter);

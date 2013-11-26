@@ -58,6 +58,7 @@ public class SearchServlet extends HttpServlet {
 		HttpURLConnection urlC = (HttpURLConnection)url.openConnection();
 		
 		urlC.setDoOutput(true);
+		urlC.setDoOutput(true);
 		
 		DataOutputStream dos = new DataOutputStream(urlC.getOutputStream());
 		dos.writeBytes(urlParameter);

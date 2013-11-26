@@ -74,10 +74,6 @@ public class SearchServlet extends HttpServlet {
 		br.close();
 		
 		String result = responseSB.toString();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode rootNode = mapper.readTree(result);
-		request.setAttribute("resultJsonNode", rootNode);
-		request.setAttribute("keyword", keyword);
 
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();

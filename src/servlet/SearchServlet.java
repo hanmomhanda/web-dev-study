@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,23 +48,10 @@ public class SearchServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");		
 		
-//* Plain Request Version
-//		Enumeration<String> headerNames = request.getHeaderNames();
-//System.out.println("Request Headers Start------------");
-//		while ( headerNames.hasMoreElements() ) {
-//			String name = headerNames.nextElement();
-//			String value = request.getHeader(name);
-//
-//System.out.println("  " + name + " : " + value);
-//		}
-//System.out.println("Request Headers End--------------");
-		
 		String keyword = request.getParameter("keyword");
 		String urlEncodedKeyword = URLEncoder.encode(keyword,"utf-8");
 		
 		String urlDaumAPI = "http://apis.daum.net/search/book";
-//System.out.println("keyword : " + keyword);
-//System.out.println("url encoded eyword : " + urlEncodedKeyword);
 		String urlParameter = "apikey=DAUM_SEARCH_DEMO_APIKEY&output=json&q="+urlEncodedKeyword;
 		
 		URL url = new URL(urlDaumAPI);		
@@ -77,11 +63,6 @@ public class SearchServlet extends HttpServlet {
 		dos.writeBytes(urlParameter);
 		dos.flush();
 		dos.close();
-		
-		int responseCode = urlC.getResponseCode();
-//System.out.println("Sending 'POST' request to URL : " + urlDaumAPI);
-//System.out.println("Post Parameters : " + urlParameter);
-//System.out.println("Response Code : " + responseCode);
 
 		BufferedReader	br = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
 		String inputLine = null;
@@ -97,18 +78,10 @@ public class SearchServlet extends HttpServlet {
 		JsonNode rootNode = mapper.readTree(result);
 		request.setAttribute("resultJsonNode", rootNode);
 		request.setAttribute("keyword", keyword);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/result.jsp");
-		dispatcher.forward(request, response);
-		
-		
-//System.out.println("Response : " + result);
-/*
+
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
 		pw.write(result);
-*/
-//*/
 	}
 
 }

@@ -74,6 +74,7 @@ public class SearchServlet extends HttpServlet {
 		br.close();
 		
 		String result = responseSB.toString();
+		String result1 = result;
 
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package servlet;
 
 import java.io.BufferedReader;

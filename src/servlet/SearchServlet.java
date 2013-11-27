@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,15 +52,12 @@ public class SearchServlet extends HttpServlet {
 		String urlEncodedKeyword = URLEncoder.encode(keyword,"utf-8");
 		
 		String urlDaumAPI = "http://apis.daum.net/search/book";
-		String urlParameter = "apikey=DAUM_SEARCH_DEMO_APIKEY&output=xml&q="+urlEncodedKeyword;
+		String urlParameter = "apikey=DAUM_SEARCH_DEMO_APIKEY&output=json&q="+urlEncodedKeyword;
 		
 		URL url = new URL(urlDaumAPI);		
 		HttpURLConnection urlC = (HttpURLConnection)url.openConnection();
 		
 		urlC.setDoOutput(true);
-		urlC.setDoOutput(true);
-		String dummy;
-		String bora;
 		
 		DataOutputStream dos = new DataOutputStream(urlC.getOutputStream());
 		dos.writeBytes(urlParameter);
@@ -77,13 +74,20 @@ public class SearchServlet extends HttpServlet {
 		br.close();
 		
 		String result = responseSB.toString();
-		String result1 = result;
-		result = result1;
-		result1 = result;
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode rootNode = mapper.readTree(result);
+		
+		request.setAttribute("resultJsonNode", rootNode);
+		request.setAttribute("keyword", keyword);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/result.jsp");
+		dispatcher.forward(request, response);
 
+/*
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
 		pw.write(result);
+*/
 	}
 
 }

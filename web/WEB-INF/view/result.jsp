@@ -3,7 +3,7 @@
 <%@ page import="com.fasterxml.jackson.databind.JsonNode"%>
 <%
 JsonNode rootNode = (JsonNode)request.getAttribute("resultJsonNode");
-System.out.println("rootNode : " + rootNode);
+//System.out.println("rootNode : " + rootNode);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">

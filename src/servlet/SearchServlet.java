@@ -82,12 +82,6 @@ public class SearchServlet extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/result.jsp");
 		dispatcher.forward(request, response);
-
-/*
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter pw = response.getWriter();
-		pw.write(result);
-*/
 	}
 
 }

@@ -51,19 +51,21 @@ jQuery(document).ready( function () {
 //         });
 //
 	};
-	
-	var renderWithData = function (data) {
-		var jsonObj = JSON.parse(data);
-		var bookList = jsonObj.channel.item;
-		for ( var item in bookList ) {
-			$('#searchResult').append(item.title+"<br/>");
-		}
-	}
-	
-	var handleError = function (data) {
-		console.log("Data Receiving Error");
-		console.dir(data);
-	};
+
+// Ajax Version
+// 	var renderWithData = function (data) {
+// 		var jsonObj = JSON.parse(data);
+// 		var bookList = jsonObj.channel.item;
+// 		for ( var item in bookList ) {
+// 			$('#searchResult').append(item.title+"<br/>");
+// 		}
+// 	}
+
+// Ajax Version
+// 	var handleError = function (data) {
+// 		console.log("Data Receiving Error");
+// 		console.dir(data);
+// 	};
 	
 	$("#btnSearch").click( goSearch );
 });

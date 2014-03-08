@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile 'javax:javaee-web-api:6.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.3'
+}
+
+build.doLast {
+    println 'Executing Copy'
+    copyJar.execute()
+}
+
+task copyJar(type: Copy) {
+//    println 'Coping war to Tomcat/webapps...'
+    from 'build/libs/web-dev-study.jar'
+    into '/opt/dev-infra/apache/tomcat/apache-tomcat-7.0.47/webapps/'
+}

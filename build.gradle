@@ -11,3 +11,10 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.3'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+
+build.doLast {
+    wrapper.execute()
+}

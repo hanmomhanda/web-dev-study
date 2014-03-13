@@ -15,6 +15,13 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
+task copyWar(type: Copy) {
+    from 'build/libs/web-dev-study.war'
+    into '/opt/dev-infra/apache/tomcat/apache-tomcat-7.0.47/webapps'
+    fileMode = 0755
+}
+
 build.doLast {
     wrapper.execute()
+    copyWar.execute()
 }

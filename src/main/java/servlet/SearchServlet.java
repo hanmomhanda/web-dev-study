@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,9 +49,25 @@ public class SearchServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");		
+		request.setCharacterEncoding("UTF-8");
+/*
+Enumeration<String> headers = request.getHeaderNames();
+while (headers.hasMoreElements()) {
+	String key = headers.nextElement();
+	System.out.println("key : " + key + ", value : " + request.getHeader(key));	
+}
+*/
 		
-		String keyword = request.getParameter("keyword");
+		BufferedReader br0 = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        String json = "";
+        if(br0 != null){
+            json = br0.readLine();
+        }
+		ObjectMapper reqMapper = new ObjectMapper();		
+		Map<String, String> jsonMap = reqMapper.readValue(json, Map.class);
+		
+		String keyword = jsonMap.get("keyword");
+
 		String urlEncodedKeyword = URLEncoder.encode(keyword,"utf-8");
 		
 		String urlDaumAPI = "http://apis.daum.net/search/book";
@@ -64,7 +83,7 @@ public class SearchServlet extends HttpServlet {
 		dos.flush();
 		dos.close();
 
-		BufferedReader	br = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
 		String inputLine = null;
 		StringBuffer responseSB = new StringBuffer();
 		
@@ -77,11 +96,20 @@ public class SearchServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(result);
 		
+		// response to ajax
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();				
+		out.print(result);
+		
+		
+		// dispatch to jsp
+		/*
 		request.setAttribute("resultJsonNode", rootNode);
 		request.setAttribute("keyword", keyword);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/result.jsp");
 		dispatcher.forward(request, response);
+		*/
 	}
 
 }

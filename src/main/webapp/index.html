@@ -23,51 +23,172 @@
         </form>
         </div>        
       </div>
-    </div>
-    <div id='searchResult'>
-    </div>
-    오명운
-    <div id="footer">
-      <div class="container">
-        <p class="text-muted credit">Powered by <a href='http://getbootstrap.com/' target='_blank'>BootStrap</a></p>
+    
+      <div class="bs-example">
+        <div class="row">
+          <div id='searchResult'></div>      
+        </div>
+      </div><!-- /.bs-example -->
+      <div id="footer">
+        <div class="container">
+          <p class="text-muted credit">Powered by <a href='http://getbootstrap.com/' target='_blank'>BootStrap</a></p>
+        </div>
       </div>
     </div>
-<script src="/web-dev-study/public/js/jquery.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
 <script src="/web-dev-study/public/js/bootstrap.min.js"></script>
 <script>
 jQuery(document).ready( function () {
+/*
+var M, V, C;
+
+M = {
+    keyword = $('#txtKeyword').val();
+};
+
+V = {
+};
+
+C = {
+};
 	
+C.init();
+*/
+    var 
+        resultDiv = document.getElementById('searchResult')
+      , colDiv
+      , thumbDiv
+      , capDiv
+      , bookImg
+//      , h3Title = document.createElement('h3')
+    ;
+    
+    var clearResult = function() {
+        
+        while (resultDiv.firstChild) {
+            resultDiv.removeChild(resultDiv.firstChild);
+        }
+    };
+
 	var goSearch = function () {
-	    $('#frmSearch').submit();
+    
+		clearResult();
+		// Ajax Version
+	    var renderWithData = function (data) {
+
+	        var jsonObj = JSON.parse(data)
+	          , bookList = jsonObj.channel.item
+	          
+	        ;
+/*            
+console.log('---------jsonObj----------');            
+console.dir(jsonObj);
+console.log('---------jsonObj.channel----------');
+console.dir(jsonObj.channel);
+console.log('---------jsonObj.channel.item----------');
+console.dir(jsonObj.channel.item);
+console.log('---------bookList----------');
+console.dir(bookList);
+*/
+
+	        
+            for ( var i=0, max=bookList.length, book ; i < max ; i++ ) {
+                book = bookList[i];
+                
+                colDiv = document.createElement('div');
+                thumbDiv = document.createElement('div');
+                capDiv = document.createElement('div');
+                bookImg = document.createElement('img');
+                titleP = document.createElement('p');
+                
+                colDiv.setAttribute('class', 'col-sm-6 col-md-4');
+                thumbDiv.setAttribute('class', 'thumbnail');
+                capDiv.setAttribute('class', 'caption');
+                
+                resultDiv.appendChild(colDiv);
+	        	colDiv.appendChild(thumbDiv);
+//console.dir(book);
+                bookImg.setAttribute('src', book.cover_l_url);
+                bookImg.setAttribute('data-src', book.cover_l_url);
+                bookImg.setAttribute('alt', 'Thumbnail');
+                
+//                h3Title.innerHTML = book.title;
+//                capDiv.appendChild(h3Title);
+//                capDiv.innerText = book.desctiption + '\n\n';
+                titleP.innerHTML = book.title;
+
+                capDiv.appendChild(titleP)
+                capDiv.innerHTML='<h3>'+book.title+'</h3>'+'<p>'+book.description+'</p>'+'<a href="' + book.link + '" class="btn btn-primary" role="button" target="_blank">상세보기</a>';
+	        	
+                thumbDiv.appendChild(bookImg);
+                thumbDiv.appendChild(capDiv);
+            }
+/*
+	        for ( var book in bookList ) {
+	        	resultDiv.appendChild(colDiv);
+	        	colDiv.appendChild(thumbDiv);
+console.dir(book);
+                bookImg.setAttribute('src', book.cover_l_url);
+                bookImg.setAttribute('data-src', book.cover_l_url);
+                bookImg.setAttribute('alt', 'Thumbnail');
+                
+                h3Title.textContent = book.title;
+                capDiv.appendChild(h3Title);
+                capDiv.textContent = book.desctiption + '\n\n';
+                capDiv.innerHTML='<a href="' + book.link + '" class="btn btn-primary" role="button" target="_blank">상세보기</a>';
+	        	
+                thumbDiv.appendChild(bookImg);
+                thumbDiv.appendChild(capDiv);	        	
+            }
+*/
+/*
+	        <%
+	        for ( JsonNode node : rootNode.path("channel").path("item") ) {
+	      %>
+	        <div class="col-sm-6 col-md-4">
+	          <div class="thumbnail">
+	            <img src=<%= node.path("cover_l_url").toString() %> data-src=<%= node.path("cover_l_url").toString() %> alt="Thumbnail">
+	            <div class="caption">
+	              <h3><%= node.path("title").toString().replace("\"", "").replace("&lt;", "<").replace("&gt;", ">") %></h3>
+	              <p><%= node.path("description").toString().replace("\"", "") %></p>
+	              <p><a href=<%= node.path("link").toString() %> class="btn btn-primary" role="button" target="_blank">상세보기</a></p>
+	            </div>
+	          </div>
+	        </div>
+	      <%
+	        }
+	      %>
+*/
+	    }
+
+	    // Ajax Version
+	    var handleError = function (data) {
+	        console.log("Data Receiving Error");
+	        console.dir(data);
+            resultDiv.innerHTML=data.responseText;
+            
+	    };
+
 	    
-// Ajax Version
-//         $.ajax({
-//             type: "POST",
-//             url: "/web-dev-study/SearchServlet",
-//             contentType: "application/x-www-form-urlencoded",
-//             data: JSON.stringify({"keyword": $('#txtKeyword').val()}),
-//             success: renderWithData,
-//             error: handleError
-//         });
-//
+        // Ajax Version
+        $.ajax({
+            type: "POST",
+            url: "/web-dev-study/SearchServlet",
+            contentType: 'application/json',
+            //data: JSON.stringify({"keyword": $('#txtKeyword').val()}),
+            data: JSON.stringify({"keyword": $('#txtKeyword').val()}),
+            success: renderWithData,
+            error: handleError
+        });
+
+        // Plain Version        
+        //$('#frmSearch').submit();
+        
 	};
 
-// Ajax Version
-// 	var renderWithData = function (data) {
-// 		var jsonObj = JSON.parse(data);
-// 		var bookList = jsonObj.channel.item;
-// 		for ( var item in bookList ) {
-// 			$('#searchResult').append(item.title+"<br/>");
-// 		}
-// 	}
-
-// Ajax Version
-// 	var handleError = function (data) {
-// 		console.log("Data Receiving Error");
-// 		console.dir(data);
-// 	};
 	
 	$("#btnSearch").click( goSearch );
+
 });
 </script>
 </body>

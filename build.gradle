@@ -19,7 +19,7 @@ task wrapper(type: Wrapper) {
 
 task copyWar(type: Copy) {
     from 'build/libs/web-dev-study.war'
-    into '/opt/dev-infra/apache/tomcat/apache-tomcat-7.0.47/webapps'
+    into '/opt/dev-infra/tomcat7/webapps'
     fileMode = 0755
 }
 

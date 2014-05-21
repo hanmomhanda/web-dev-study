@@ -1,3 +1,5 @@
 /build
 /.gradle
 /bin
+/nbproject/private/
+/nbproject
